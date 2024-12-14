@@ -53,7 +53,7 @@ function Library:CreateWindow(title, color)
 
     -- Window Properties
     BracketV2.Name = title
-    BracketV2.Parent = game.CoreGui
+    BracketV2.Parent = game:GetService("CoreGui")
     BracketV2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     core.Name = "core"
@@ -444,7 +444,7 @@ function Library:CreateWindow(title, color)
                 -- Toggle Code
                 local ToggleCallback = callback
 
-                game.RunService.Heartbeat:Connect(function()
+                game:GetService("RunService").Heartbeat:Connect(function()
                     if (checkbox.BackgroundColor3 == oldcolor) then
                         checkbox.BackgroundColor3 = color
                     end
@@ -526,7 +526,7 @@ function Library:CreateWindow(title, color)
                         bindtext.Text = "[ ... ]"
                     end)
 
-                    game.RunService.Heartbeat:Connect(function()
+                    game:GetService("RunService").Heartbeat:Connect(function()
                         if (WaitingForBind == false) then
                             if (Clicked == true) then
                                 WaitingForBind = true
@@ -1070,7 +1070,7 @@ function Library:CreateWindow(title, color)
 
                 local ColorDragging = false
                 local dragInput, dragStart, startPos = nil, nil, nil
-                local Mouse = game.Players.LocalPlayer:GetMouse()
+                local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
 
                 colorframe.InputBegan:Connect(function(input)
                     if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and userinputservice:GetFocusedTextBox() == nil then
@@ -1111,7 +1111,7 @@ function Library:CreateWindow(title, color)
                             ColorInput:Disconnect()
                         end
 
-                        ColorInput = game.RunService.RenderStepped:Connect(function()
+                        ColorInput = game:GetService("RunService").RenderStepped:Connect(function()
                             local ColorX = (math.clamp(Mouse.X - colorslider.AbsolutePosition.X, 0, colorslider.AbsoluteSize.X) / colorslider.AbsoluteSize.X)
                             local ColorY = (math.clamp(Mouse.Y - gradient.AbsolutePosition.Y, 0, gradient.AbsoluteSize.Y) / gradient.AbsoluteSize.Y)
 
@@ -1143,7 +1143,7 @@ function Library:CreateWindow(title, color)
                             HueInput:Disconnect()
                         end
 
-                        HueInput = game.RunService.RenderStepped:Connect(function()
+                        HueInput = game:GetService("RunService").RenderStepped:Connect(function()
                             local HueY = (math.clamp(Mouse.X - colorslider.AbsolutePosition.X, 0, colorslider.AbsoluteSize.X) / colorslider.AbsoluteSize.X)
 
                             bar_2.Position = UDim2.new(HueY, 0, 0, 0)
@@ -1299,7 +1299,7 @@ function Library:CreateWindow(title, color)
                 local UIGradient_5 = Instance.new("UIGradient")
                 local title_5 = Instance.new("TextLabel")
 
-                local Pfp = game.Players:GetUserThumbnailAsync(UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48)
+                local Pfp = game:GetService("Players"):GetUserThumbnailAsync(UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size48x48)
 
                 playercard.Name = "playercard"
                 playercard.Parent = container_players
@@ -1466,19 +1466,19 @@ function Library:CreateWindow(title, color)
                 insertedplayers[UserId] = playercard
             end
 
-            for i,v in pairs(game.Players:GetPlayers()) do
-                if (v.Name ~= game.Players.LocalPlayer.Name) then
+            for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+                if (v.Name ~= game:GetService("Players").LocalPlayer.Name) then
                     local MemberShip = tostring(v.MembershipType):gsub("Enum.MembershipType.", "")
                     CreatePlayerCard(v.Name, v.UserId, MemberShip, v.TeamColor.Color)
                 end
             end
 
-            game.Players.ChildAdded:Connect(function(Plr)
+            game:GetService("Players").ChildAdded:Connect(function(Plr)
                 local MemberShip = tostring(Plr.MembershipType):gsub("Enum.MembershipType.", "")
                 CreatePlayerCard(Plr.Name, Plr.UserId, MemberShip, Plr.TeamColor.Color)
             end)
 
-            game.Players.ChildRemoved:Connect(function(Plr)
+            game:GetService("Players").ChildRemoved:Connect(function(Plr)
                 insertedplayers[Plr.UserId]:Destroy()
             end)
         end
